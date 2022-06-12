@@ -1,4 +1,4 @@
-import subprocess
+import sys
 from typing import NamedTuple
 from urllib.parse import quote, urlencode
 
@@ -54,9 +54,9 @@ COLORS = [
 ]
 
 
-def main() -> None:
+def generate(template_branch: str) -> None:
     with requests.get(
-        "https://github.com/iratekalypso/pxls.space/raw/main/VGV_numbers.png",
+        f"https://github.com/iratekalypso/pxls.space/raw/{template_branch}/VGV_numbers.png",
         stream=True,
     ) as resp:
         image = PIL.Image.open(resp.raw)
@@ -97,4 +97,7 @@ def file_name(index: int) -> str:
 
 
 if __name__ == "__main__":
-    main()
+    template_branch = "main"
+    if len(sys.argv) > 1:
+        template_branch = sys.argv[1]
+    generate(template_branch)
